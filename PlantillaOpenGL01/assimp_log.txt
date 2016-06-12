@@ -1,0 +1,9 @@
+Info,  T15584: Load planos.obj
+Info,  T15584: Found a matching importer for this file format
+Info,  T15584: Import root directory is '.\'
+Info,  T15584: Entering post processing pipeline
+Info,  T15584: TriangulateProcess finished. All polygons have been triangulated.
+Info,  T15584: Points: 0, Lines: 0, Triangles: 2, Polygons: 0 (Meshes, X = removed)
+Info,  T15584: CalcTangentsProcess finished. Tangents have been calculated
+Info,  T15584: Cache relevant are 0 meshes (0 faces). Average output ACMR is -1.#IND00
+Info,  T15584: Leaving post processing pipeline
