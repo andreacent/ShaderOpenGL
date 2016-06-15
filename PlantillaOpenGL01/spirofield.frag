@@ -1,6 +1,6 @@
 #version 130
 uniform float _calctype;
-uniform float _r;
+uniform float _R;
 uniform float _freq;
 uniform float _hoff;
 uniform float _f;
@@ -157,6 +157,6 @@ vec4 spirofield(float r, float hoff, float freq, float calctype,float f){
 
 void main(void) {
 
-   gl_FragColor = spirofield(_r, _hoff, _freq, _calctype, _f);
+   gl_FragColor = spirofield(_R, _hoff, _freq, _calctype, _f);
 	//gl_FragColor = HSVtoRGB(0.0,1.0);
 }
