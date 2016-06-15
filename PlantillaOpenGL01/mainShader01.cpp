@@ -33,10 +33,11 @@ cwc::glShader *shader02;
 float posText;      //posicion del texto
 float interlineado; //interlineado del texto
 GLvoid *font_style = GLUT_BITMAP_9_BY_15; //tipo de letra
+bool mostrarTexto = true;
 
 // spirofield
-float calctype = 0.0; 
-float r = 10.0;
+int calctype = 0; 
+int r = 10;
 float freq = 1.0;
 float hoff = 0.0;
 float f	   = 1.0;
@@ -49,7 +50,7 @@ float sz   = 4.0;
 float huefreq = 1.0;
 
 // -------------------------------TEXTO-------------------------------
-const char* textos[14] = {
+const char* textos[15] = {
     "Spirofield Parametros",
     "_R: ",
     "_b: ",
@@ -63,7 +64,8 @@ const char* textos[14] = {
     "_huefreq: ",
     "_sz: ",
     "_escape: ",
-    "_maxiter: "
+    "_maxiter: ",
+    "==========================="
   };
 
 void imprimir_bitmap_string(void* font, const char* s){
@@ -104,44 +106,73 @@ void dibujarTextoSpiro() {
   imprimir_bitmap_string(font_style, textos[0]);
   glRasterPos3f(x, posText, 0);
   posText -= interlineado;
-  imprimir_bitmap_string(font_style, "====================");
+  imprimir_bitmap_string(font_style, textos[14]);
 
-  convertirTexto(textos[1],r,x);
   convertirTexto(textos[3],hoff,x);
   convertirTexto(textos[4],freq,x);
   convertirTexto(textos[5],calctype,x);
-  convertirTexto(textos[6],f,x);
+
+  posText += 3*interlineado;
+  convertirTexto(textos[1],r,16);
+  convertirTexto(textos[6],f,16);
+
+  posText -= interlineado;
 
   glRasterPos3f(x, posText, 0);
   posText -= interlineado;
-  imprimir_bitmap_string(font_style, "====================");
+  imprimir_bitmap_string(font_style, textos[14]);
 }
+
+void dibujarTextoMandel() {
+  float x = -26;
+  posText = 17.0;
+  interlineado = 1;
+
+  glColor3f(0.7,0.7,0.7);
+
+  glRasterPos3f(x, posText, 0);
+  posText -= interlineado;
+  imprimir_bitmap_string(font_style, textos[7]);
+  glRasterPos3f(x, posText, 0);
+  posText -= interlineado;
+  imprimir_bitmap_string(font_style, textos[14]);
+
+  convertirTexto(textos[8],xc,x);
+  convertirTexto(textos[9],yc,x);
+  convertirTexto(textos[11],sz,x);
+
+  posText += 3*interlineado;
+  convertirTexto(textos[10],huefreq,-17);
+  convertirTexto(textos[12],escape,-17);
+  convertirTexto(textos[13],maxiter,-17);
+
+  glRasterPos3f(x, posText, 0);
+  posText -= interlineado;
+  imprimir_bitmap_string(font_style, textos[14]);
+}
+
 // ----------------------------FIN TEXTO---------------------------
 
 void imprimirTexto() {
-    printf("========================\n");
 	printf("Spirofield Parametros\n");
     printf("========================\n");
 	printf( "_R: %d\n", r );
-	printf( "_hoff: %d\n", hoff );
-	printf( "_freq: %d\n", freq );
+	printf( "_hoff: %3.2f\n", hoff );
+	printf( "_freq: %3.2f\n", freq );
 	printf( "_calctype: %d\n", calctype );
-	printf( "_f: %d \n", f );
+	printf( "_f: %3.2f \n", f );
     printf("========================\n");
 
-    printf("========================\n");
 	printf("Mandel Parametros\n");
     printf("========================\n");
-	printf( "_xc: %d\n", xc );
-	printf( "_yc: %d\n", yc );
-	printf( "_huefreq: %d\n", huefreq );
-	printf( "_sz: %d\n", sz );
+	printf( "_xc: %03.2f\n", xc );
+	printf( "_yc: %03.2f\n", yc );
+	printf( "_huefreq: %03.2f\n", huefreq );
+	printf( "_sz: %03.2f\n", sz );
 	printf( "_escape: %d\n", escape );
 	printf( "_maxiter: %d\n", maxiter );
     printf("========================\n");
-
 }
-
 
 void ejesCoordenada() {
 	
@@ -191,13 +222,14 @@ void changeViewport(int w, int h) {
 	float aspectratio;
 
 	if (h==0) h=1;
+	else if(h < 396) mostrarTexto == false;
+	else mostrarTexto = true;
 	
    glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
    glMatrixMode (GL_PROJECTION);
    glLoadIdentity ();
    gluPerspective(30, (GLfloat) w/(GLfloat) h, 1.0, 300.0);
    glMatrixMode (GL_MODELVIEW);
-
 }
 
 void init(){
@@ -419,9 +451,12 @@ void render(){
 	
 	glPopMatrix();
 
-	glPushMatrix();
-		dibujarTextoSpiro();
-	glPopMatrix();
+	if(mostrarTexto){
+		glPushMatrix();
+			dibujarTextoSpiro();
+			dibujarTextoMandel();
+		glPopMatrix();
+	}
 
 	glDisable(GL_BLEND);
 	glDisable(GL_LINE_SMOOTH);
