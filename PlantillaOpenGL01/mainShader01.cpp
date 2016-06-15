@@ -150,13 +150,13 @@ void fin_shader(int idx) {
 void Keyboard(unsigned char key, int x, int y){
   switch (key){
 	case 'q': // ​calctype ​= 0 
-		calctype ​= 0 
+		calctype = 0; 
 	break;
 	case 'a': // calctype = 1 
-		calctype = 1 
+		calctype = 1; 
 	break;
 	case 'z': // calctype ​= 2 
-		calctype ​= 2 
+		calctype = 2; 
 	break;
 	case 'w': // incrementa ​R ​en 1
 		r += 1;
@@ -184,14 +184,12 @@ void Keyboard(unsigned char key, int x, int y){
 	break;
 	case 'y': // incrementa ​xc ​en 0.05 
 		xc += 0.05;
+		// incrementa ​yc ​en 0.05 
+		yc += 0.05;
 	break;
 	case 'u': // reduce ​xc ​en 0.05 
 		if(xc - 0.05 >= 0.0) xc -= 0.05;
-	break;
-	case 'y': // incrementa ​yc ​en 0.05 
-		yc += 0.05;
-	break;
-	case 'u': // reduce ​yc ​en 0.05 
+		// reduce ​yc ​en 0.05 
 		if(yc - 0.05 >= 0.0) yc -= 0.05;
 	break;
 	case 'n': // incrementa ​sz ​en 0.001 
