@@ -27,18 +27,15 @@ cwc::glShaderManager SM;
 cwc::glShader *shader01;
 cwc::glShader *shader02;
 
-#define b  2.5 
-#define rv 5
+// spirofield
+float calctype = 0.0; 
+float r = 10.0;
+float freq = 1.0;
+float hoff = 0.0;
+float f	   = 1.0;
 
-// no se cuales son los iniciales
-int calctype = 0; 
 int maxiter  = 0; 
 int escape   = 0; 
-int r;
-
-float freq = 0.0;
-float hoff = 0.0;
-float f	   = 0.0;
 float xc   = 0.0;
 float yc   = 0.0;
 float sz   = 0.0;
@@ -103,11 +100,11 @@ void changeViewport(int w, int h) {
 
 void init(){
    shader01 = SM.loadfromFile("mandel.vert","mandel.frag"); // load (and compile, link) from file
-  		  if (shader01==0) 
+		  if (shader01==0) 
 			  std::cout << "Error Loading, compiling or linking shader\n";
 
    shader02 = SM.loadfromFile("spirofield.vert","spirofield.frag"); // load (and compile, link) from file
-  		  if (shader02==0) 
+		  if (shader02==0) 
 			  std::cout << "Error Loading, compiling or linking shader\n";
 
 }
@@ -115,20 +112,26 @@ void init(){
 void cargar_shader(int idx) {
 	// Plano Derecho Mandel
 	if (idx == 0){	
-			if (shader01) shader01->begin();
+		if (shader01) shader01->begin();
 
-			//Colocar aqui los parametros Uniform
-
+		shader01->setUniform1f("_maxiter",maxiter); 
+		shader01->setUniform1f("_escape",escape); 
+		shader01->setUniform1f("_xc",xc);
+		shader01->setUniform1f("_yc",yc);
+		shader01->setUniform1f("_sz",sz);
+		shader01->setUniform1f("_huefreq",huefreq);
 	}
 
 	// Plano Izquierdo SpiroField
 	if (idx == 1){		
-		   if (shader02) shader02->begin();
+		  if (shader02) shader02->begin();
 
-		   //Colocar aqui los parametros Uniform
+		shader02->setUniform1f("_calctype",calctype); 
+		shader02->setUniform1f("_r",r);
+		shader02->setUniform1f("_freq",freq);
+		shader02->setUniform1f("_hoff",hoff);
+		shader02->setUniform1f("_f",f);
 	}
-
-
 }
 
 void fin_shader(int idx) {
@@ -217,7 +220,7 @@ void Keyboard(unsigned char key, int x, int y){
 	default:
 	break;
   }
-
+  scene_list = 0;
   glutPostRedisplay();
 }
 
@@ -284,7 +287,7 @@ void render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	GLfloat zExtent, xExtent, xLocal, zLocal;
-    int loopX, loopZ;
+	int loopX, loopZ;
 
 	glLoadIdentity ();                       
 	gluLookAt (0.0, 0.0, 70.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
@@ -295,42 +298,21 @@ void render(){
 			
 	glPushMatrix();
 
-	if (shader01) shader01->begin();
-
-	shader01->setUniform1f("_calctype",calctype); 
-	shader01->setUniform1f("_r",r);
-	shader01->setUniform1f("_freq",freq);
-	shader01->setUniform1f("_hoff",hoff);
-	shader01->setUniform1f("_f",f);
-
-	if (shader01) shader01->end();
-
-	if (shader02) shader02->begin();
-
-	shader02->setUniform1f("_maxiter",maxiter); 
-	shader02->setUniform1f("_escape",escape); 
-	shader02->setUniform1f("_xc",xc);
-	shader02->setUniform1f("_yc",yc);
-	shader02->setUniform1f("_sz",sz);
-	shader02->setUniform1f("_huefreq",huefreq);
-
-	if (shader02) shader02->end();
-
-	// Codigo para el mesh	
-	glEnable(GL_NORMALIZE);
-	glTranslatef(0.0, -2.0, 0.0);
-	glRotatef(0.0, 0.0, 1.0, 0.0);
-	glScalef(1.0, 1.0, 1.0);
-	if(scene_list == 0) {
-	    scene_list = glGenLists(1);
-	    glNewList(scene_list, GL_COMPILE);
-            // now begin at the root node of the imported data and traverse
-            // the scenegraph by multiplying subsequent local transforms
-            // together on GL's matrix stack.
-	    recursive_render(scene, scene->mRootNode);
-	    glEndList();
-	}
-	glCallList(scene_list);
+		// Codigo para el mesh	
+		glEnable(GL_NORMALIZE);
+		glTranslatef(0.0, -2.0, 0.0);
+		glRotatef(0.0, 0.0, 1.0, 0.0);
+		glScalef(1.0, 1.0, 1.0);
+		if(scene_list == 0) {
+			scene_list = glGenLists(1);
+			glNewList(scene_list, GL_COMPILE);
+				// now begin at the root node of the imported data and traverse
+				// the scenegraph by multiplying subsequent local transforms
+				// together on GL's matrix stack.
+			recursive_render(scene, scene->mRootNode);
+			glEndList();
+		}
+		glCallList(scene_list);
 	
 	glPopMatrix();
 
@@ -342,7 +324,7 @@ void render(){
 void animacion(int value) {
 	
 	glutTimerFunc(10,animacion,1);
-    glutPostRedisplay();
+	glutPostRedisplay();
 	
 }
 
@@ -408,7 +390,7 @@ int main (int argc, char** argv) {
 
 	glutInitWindowSize(960,540);
 
-	glutCreateWindow("Test Opengl");
+	glutCreateWindow("Proyecto VI - Shader");
 
 	// Codigo para cargar la geometria usando ASSIMP
 
