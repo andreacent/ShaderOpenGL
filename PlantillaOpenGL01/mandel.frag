@@ -5,13 +5,15 @@
 //uniform float _sz;
 //uniform float _huefreq;
 
-vec4 HSVtoRGB( float h, float s, float v ){
+vec4 HSVtoRGB( float h, float v ){
    int i;
-   float f, p, q, t;
+   float f, p, q, t, s;
    vec4 RGB;
    
+   s = gl_TexCoord[0].s;
+
    h = 360*h;
-   /*if( s == 0 ) {
+   /*if( gl_TexCoord[0].s == 0 ) {
       // achromatic (grey)
       RGB = vec3(v,v,v);
       return RGB
@@ -64,5 +66,5 @@ vec4 HSVtoRGB( float h, float s, float v ){
 }
 
 void main(void) {
-	gl_FragColor = HSVtoRGB(0.5,gl_TexCoord[0].s,1.0);
+	gl_FragColor = HSVtoRGB(0.5,1.0);
 }

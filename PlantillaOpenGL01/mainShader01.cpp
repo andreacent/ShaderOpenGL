@@ -8,6 +8,9 @@
 #include "glsl.h"
 #include "glm.h"
 
+#include <string.h>
+#include <sstream>
+
 // assimp include files. These three are usually needed.
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
@@ -27,6 +30,10 @@ cwc::glShaderManager SM;
 cwc::glShader *shader01;
 cwc::glShader *shader02;
 
+float posText;      //posicion del texto
+float interlineado; //interlineado del texto
+GLvoid *font_style = GLUT_BITMAP_9_BY_15; //tipo de letra
+
 // spirofield
 float calctype = 0.0; 
 float r = 10.0;
@@ -34,12 +41,107 @@ float freq = 1.0;
 float hoff = 0.0;
 float f	   = 1.0;
 
-int maxiter  = 0; 
-int escape   = 0; 
-float xc   = 0.0;
-float yc   = 0.0;
-float sz   = 0.0;
-float huefreq = 0.0;
+int maxiter = 20; 
+int escape  = 256; 
+float xc   = 0.5;
+float yc   = 0.5;
+float sz   = 4.0;
+float huefreq = 1.0;
+
+// -------------------------------TEXTO-------------------------------
+const char* textos[14] = {
+    "Spirofield Parametros",
+    "_R: ",
+    "_b: ",
+    "_hoff: ",
+    "_freq: ",
+    "_calctype: ",
+    "_f: ",
+    "Mandel Parametros",  
+    "_xc: ",
+    "_yc: ",
+    "_huefreq: ",
+    "_sz: ",
+    "_escape: ",
+    "_maxiter: "
+  };
+
+void imprimir_bitmap_string(void* font, const char* s){
+    if (s && strlen(s)) {
+        while (*s) {
+            glutBitmapCharacter(font, *s);
+            if(*s == '.'){
+                s++;
+                glutBitmapCharacter(font, *s);
+                break;
+            }
+            s++;
+        }
+    }
+}
+
+void convertirTexto(const char* s, float i, float x){
+    glRasterPos3f(x, posText, 0);
+    posText -= interlineado;
+
+    std::stringstream ss;
+    ss << i;
+    std::string num(ss.str());
+    string c = s + num;
+    const char *C = c.c_str();
+    imprimir_bitmap_string(font_style, C);
+}
+
+void dibujarTextoSpiro() {
+  float x = 4;
+  posText = 17.0;
+  interlineado = 1;
+
+  glColor3f(0.7,0.7,0.7);
+
+  glRasterPos3f(x, posText, 0);
+  posText -= interlineado;
+  imprimir_bitmap_string(font_style, textos[0]);
+  glRasterPos3f(x, posText, 0);
+  posText -= interlineado;
+  imprimir_bitmap_string(font_style, "====================");
+
+  convertirTexto(textos[1],r,x);
+  convertirTexto(textos[3],hoff,x);
+  convertirTexto(textos[4],freq,x);
+  convertirTexto(textos[5],calctype,x);
+  convertirTexto(textos[6],f,x);
+
+  glRasterPos3f(x, posText, 0);
+  posText -= interlineado;
+  imprimir_bitmap_string(font_style, "====================");
+}
+// ----------------------------FIN TEXTO---------------------------
+
+void imprimirTexto() {
+    printf("========================\n");
+	printf("Spirofield Parametros\n");
+    printf("========================\n");
+	printf( "_R: %d\n", r );
+	printf( "_hoff: %d\n", hoff );
+	printf( "_freq: %d\n", freq );
+	printf( "_calctype: %d\n", calctype );
+	printf( "_f: %d \n", f );
+    printf("========================\n");
+
+    printf("========================\n");
+	printf("Mandel Parametros\n");
+    printf("========================\n");
+	printf( "_xc: %d\n", xc );
+	printf( "_yc: %d\n", yc );
+	printf( "_huefreq: %d\n", huefreq );
+	printf( "_sz: %d\n", sz );
+	printf( "_escape: %d\n", escape );
+	printf( "_maxiter: %d\n", maxiter );
+    printf("========================\n");
+
+}
+
 
 void ejesCoordenada() {
 	
@@ -127,7 +229,7 @@ void cargar_shader(int idx) {
 		  if (shader02) shader02->begin();
 
 		shader02->setUniform1f("_calctype",calctype); 
-		shader02->setUniform1f("_r",r);
+		shader02->setUniform1f("_R",r);
 		shader02->setUniform1f("_freq",freq);
 		shader02->setUniform1f("_hoff",hoff);
 		shader02->setUniform1f("_f",f);
@@ -295,6 +397,7 @@ void render(){
 	glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable( GL_LINE_SMOOTH );	
 
+	imprimirTexto();
 			
 	glPushMatrix();
 
@@ -314,6 +417,10 @@ void render(){
 		}
 		glCallList(scene_list);
 	
+	glPopMatrix();
+
+	glPushMatrix();
+		dibujarTextoSpiro();
 	glPopMatrix();
 
 	glDisable(GL_BLEND);
