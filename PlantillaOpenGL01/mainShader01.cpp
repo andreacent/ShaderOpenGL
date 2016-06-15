@@ -91,9 +91,7 @@ void changeViewport(int w, int h) {
 	
 	float aspectratio;
 
-	if (h==0)
-		h=1;
-
+	if (h==0) h=1;
 	
    glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
    glMatrixMode (GL_PROJECTION);
@@ -150,13 +148,13 @@ void fin_shader(int idx) {
 void Keyboard(unsigned char key, int x, int y){
   switch (key){
 	case 'q': // ​calctype ​= 0 
-		calctype ​= 0 
+		calctype = 0;
 	break;
 	case 'a': // calctype = 1 
-		calctype = 1 
+		calctype = 1;
 	break;
 	case 'z': // calctype ​= 2 
-		calctype ​= 2 
+		calctype = 2;
 	break;
 	case 'w': // incrementa ​R ​en 1
 		r += 1;
@@ -184,14 +182,12 @@ void Keyboard(unsigned char key, int x, int y){
 	break;
 	case 'y': // incrementa ​xc ​en 0.05 
 		xc += 0.05;
+		// incrementa ​yc ​en 0.05 
+		yc += 0.05;
 	break;
 	case 'u': // reduce ​xc ​en 0.05 
 		if(xc - 0.05 >= 0.0) xc -= 0.05;
-	break;
-	case 'y': // incrementa ​yc ​en 0.05 
-		yc += 0.05;
-	break;
-	case 'u': // reduce ​yc ​en 0.05 
+		// reduce ​yc ​en 0.05 
 		if(yc - 0.05 >= 0.0) yc -= 0.05;
 	break;
 	case 'n': // incrementa ​sz ​en 0.001 
@@ -299,10 +295,31 @@ void render(){
 			
 	glPushMatrix();
 
+	if (shader01) shader01->begin();
+
+	shader01->setUniform1f("_calctype",calctype); 
+	shader01->setUniform1f("_r",r);
+	shader01->setUniform1f("_freq",freq);
+	shader01->setUniform1f("_hoff",hoff);
+	shader01->setUniform1f("_f",f);
+
+	if (shader01) shader01->end();
+
+	if (shader02) shader02->begin();
+
+	shader02->setUniform1f("_maxiter",maxiter); 
+	shader02->setUniform1f("_escape",escape); 
+	shader02->setUniform1f("_xc",xc);
+	shader02->setUniform1f("_yc",yc);
+	shader02->setUniform1f("_sz",sz);
+	shader02->setUniform1f("_huefreq",huefreq);
+
+	if (shader02) shader02->end();
+
 	// Codigo para el mesh	
 	glEnable(GL_NORMALIZE);
-	glTranslatef(0.0, 0.0, 0.0);
-	glRotatef(0.0, 0.0, 0.0, 0.0);
+	glTranslatef(0.0, -2.0, 0.0);
+	glRotatef(0.0, 0.0, 1.0, 0.0);
 	glScalef(1.0, 1.0, 1.0);
 	if(scene_list == 0) {
 	    scene_list = glGenLists(1);
@@ -316,7 +333,6 @@ void render(){
 	glCallList(scene_list);
 	
 	glPopMatrix();
-	
 
 	glDisable(GL_BLEND);
 	glDisable(GL_LINE_SMOOTH);
