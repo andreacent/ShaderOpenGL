@@ -1,8 +1,17 @@
-vec4 HSVtoRGB( float h, float gl_TexCoord[0].s, float v ){
+//uniform int _maxiter; 
+//uniform int _escape; 
+//uniform float _xc;
+//uniform float _yc;
+//uniform float _sz;
+//uniform float _huefreq;
+
+vec4 HSVtoRGB( float h, float v ){
    int i;
-   float f, p, q, gl_TexCoord[0].t;
+   float f, p, q, t, s;
    vec4 RGB;
    
+   s = gl_TexCoord[0].s;
+
    h = 360*h;
    /*if( gl_TexCoord[0].s == 0 ) {
       // achromatic (grey)
@@ -13,14 +22,15 @@ vec4 HSVtoRGB( float h, float gl_TexCoord[0].s, float v ){
    h /= 60;         // sector 0 to 5
    i = int(floor( h ));
    f = h - i;         // factorial part of h
-   p = v * ( 1 - gl_TexCoord[0].s );
-   q = v * ( 1 - gl_TexCoord[0].s * f );
-   gl_TexCoord[0].t = v * ( 1 - gl_TexCoord[0].s * ( 1 - f ) );
+   p = v * ( 1 - s );
+   q = v * ( 1 - s * f );
+   //t = gl_TexCoord[0].t;
+   t = v * ( 1 - s * ( 1 - f ) );
    
    switch( i ) {
       case 0:
          RGB.x = v;
-         RGB.y = gl_TexCoord[0].t;
+         RGB.y = t;
          RGB.z = p;
          break;
       case 1:
@@ -31,7 +41,7 @@ vec4 HSVtoRGB( float h, float gl_TexCoord[0].s, float v ){
       case 2:
          RGB.x = p;
          RGB.y = v;
-         RGB.z = gl_TexCoord[0].t;
+         RGB.z = t;
          break;
       case 3:
          RGB.x = p;
@@ -39,7 +49,7 @@ vec4 HSVtoRGB( float h, float gl_TexCoord[0].s, float v ){
          RGB.z = v;
          break;
       case 4:
-         RGB.x = gl_TexCoord[0].t;
+         RGB.x = t;
          RGB.y = p;
          RGB.z = v;
          break;
@@ -55,10 +65,6 @@ vec4 HSVtoRGB( float h, float gl_TexCoord[0].s, float v ){
    
 }
 
-
-
 void main(void) {
-
-
-	gl_FragColor = HSVtoRGB(0.5,1.0,1.0);
+	gl_FragColor = HSVtoRGB(0.5,1.0);
 }
