@@ -52,14 +52,14 @@ float huefreq = 1.0;
 
 /* 
    Arreglado spirofield, Listo mandel, Arreglado parámetros mayor estricto que 0. 
-   Sin embargo, hay que arreglar condicionales:
-   - freq al reducir llega a 0.0 y desde este valor si se le da a reducir pasa a 6.7 
-   - hoff de 0.1 pasa a 1.4 (caso similar a freq) 
-   - f, xc,yc y huefreq mismo caso que freq
-   - sz llega a 0.0 y puede que tambien pase a 6.7
-   Estos estan bien (los enteros):
-   - calctype, r, escape y maxiter.
+   El problema era por pantalla, por consola ya todos los parametros estan chevere,
+   ninguno llega a 0.
+   Al sz le coloque mayor igual a 0.01 para que se pueda apreciar por consola que 
+   no llega a 0.
+   Falta:
+   Revisar parametros por pantalla.
    Se podria colocar como en el proyecto anterior que el 7 vuelva a los valores originales.
+   Gif
 */
 
 // -------------------------------TEXTO-------------------------------
@@ -322,7 +322,7 @@ void Keyboard(unsigned char key, int x, int y){
 		hoff += 0.1; 
 	break;
 	case 'c': // reduce hoff ​0.1  
-		if(hoff - 0.1 > 0.0) hoff -= 0.1;
+		if(hoff - 0.1 >= 0.1) hoff -= 0.1;
 	break;
 	case 'r': // incrementa ​f en 0.05  
 		f += 0.05;
@@ -346,7 +346,7 @@ void Keyboard(unsigned char key, int x, int y){
 		sz += 0.001;
 	break;
 	case 'm': // reduce ​sz ​en 0.001 
-		if(sz - 0.001 > 0.0) sz -= 0.001;
+		if(sz - 0.001 >= 0.01) sz -= 0.001;
 	break;
 	case 'i': // incrementa ​huefreq ​en 0.05 
 		huefreq += 0.05;

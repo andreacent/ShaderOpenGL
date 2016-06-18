@@ -1,4 +1,3 @@
-#version 130
 uniform float _calctype;
 uniform float _R;
 uniform float _freq;

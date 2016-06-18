@@ -1,4 +1,3 @@
-#version 130
 uniform float _xc;
 uniform float _yc;
 uniform float _sz;
