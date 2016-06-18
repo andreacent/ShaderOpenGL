@@ -37,7 +37,7 @@ bool mostrarTexto = true;
 
 // spirofield
 int calctype = 0; 
-int r = 10;
+float r = 10.0;
 float freq = 1.0;
 float hoff = 0.0;
 float f	   = 1.0;
@@ -64,21 +64,21 @@ float huefreq = 1.0;
 
 // -------------------------------TEXTO-------------------------------
 const char* textos[15] = {
-    "Spirofield Parametros",
+    "Spirofield Parametros\0",
     "_R: ",
     "_b: ",
     "_hoff: ",
     "_freq: ",
     "_calctype: ",
     "_f: ",
-    "Mandel Parametros",  
+    "Mandel Parametros\0",  
     "_xc: ",
     "_yc: ",
     "_huefreq: ",
     "_sz: ",
     "_escape: ",
     "_maxiter: ",
-    "==========================="
+    "===========================\0"
   };
 
 void imprimir_bitmap_string(void* font, const char* s){
@@ -88,6 +88,9 @@ void imprimir_bitmap_string(void* font, const char* s){
             if(*s == '.'){
                 s++;
                 glutBitmapCharacter(font, *s);
+                s++;
+                glutBitmapCharacter(font, *s);
+                glutBitmapCharacter(font,'\0');
                 break;
             }
             s++;
@@ -169,7 +172,7 @@ void dibujarTextoMandel() {
 void imprimirTexto() {
 	printf("Spirofield Parametros\n");
     printf("========================\n");
-	printf( "_R: %d\n", r );
+	printf( "_R: %3.1f\n", r );
 	printf( "_hoff: %3.2f\n", hoff );
 	printf( "_freq: %3.2f\n", freq );
 	printf( "_calctype: %d\n", calctype );
@@ -181,7 +184,7 @@ void imprimirTexto() {
 	printf( "_xc: %03.2f\n", xc );
 	printf( "_yc: %03.2f\n", yc );
 	printf( "_huefreq: %03.2f\n", huefreq );
-	printf( "_sz: %03.2f\n", sz );
+	printf( "_sz: %03.3f\n", sz );
 	printf( "_escape: %d\n", escape );
 	printf( "_maxiter: %d\n", maxiter );
     printf("========================\n");
@@ -316,43 +319,50 @@ void Keyboard(unsigned char key, int x, int y){
 		freq += 0.05;
 	break;
 	case 'd': // reduce ​freq ​en 0.05 
-		if(freq - 0.05 > 0.0) freq -= 0.05;
+		if(freq - 0.05 >= 0.05) freq -= 0.05;
+		else freq = 0.0;
 	break;
 	case 'x': // incrementa ​hoff ​en 0.1 
 		hoff += 0.1; 
 	break;
 	case 'c': // reduce hoff ​0.1  
 		if(hoff - 0.1 >= 0.1) hoff -= 0.1;
+		else hoff = 0.0;
 	break;
 	case 'r': // incrementa ​f en 0.05  
 		f += 0.05;
 	break;
 	case 't': // reduce f​ 0.05 
-		if(f - 0.05 > 0.0) f -= 0.05;
+		if(f - 0.05 >= 0.05) f -= 0.05;
+		else f = 0.0;
 	break;
 	case 'y': // incrementa ​xc ​en 0.05 
 		xc += 0.05;
 	break;
 	case 'u': // reduce ​xc ​en 0.05 
-		if(xc - 0.05 > 0.0) xc -= 0.05;
+		if(xc - 0.05 >= 0.05) xc -= 0.05;
+		else xc = 0.0;
 	break;
 	case 'h': // incrementa ​yc ​en 0.05 
 		yc += 0.05;
 	break;
 	case 'j': // reduce ​yc ​en 0.05 
-		if(yc - 0.05 > 0.0) yc -= 0.05;
+		if(yc - 0.05 >= 0.05) yc -= 0.05;
+		else yc = 0.0;
 	break;
 	case 'n': // incrementa ​sz ​en 0.001 
 		sz += 0.001;
 	break;
 	case 'm': // reduce ​sz ​en 0.001 
-		if(sz - 0.001 >= 0.01) sz -= 0.001;
+		if(sz - 0.001 >= 0.001) sz -= 0.001;
+		else sz = 0.0;
 	break;
 	case 'i': // incrementa ​huefreq ​en 0.05 
 		huefreq += 0.05;
 	break;
 	case 'o': // reduce ​huefreq  ​en 0.05 
-		if(huefreq - 0.05 > 0.0) huefreq -= 0.05;
+		if(huefreq - 0.05 >= 0.05) huefreq -= 0.05;
+		else huefreq = 0.0;
 	break;
 	case 'f': // incrementa ​escape ​en 12 
 		escape += 12;
