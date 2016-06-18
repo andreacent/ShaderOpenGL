@@ -1,4 +1,3 @@
-#version 130
 uniform float _calctype;
 uniform float _R;
 uniform float _freq;
@@ -88,7 +87,7 @@ float lcm(float r, float rv){
 }
 
 vec4 spirofield(float r, float hoff, float freq, float calctype,float f){
-   const float b = 2.5;
+   const float b = 5;
    const int rv = 5;
    float i, theta, rho, nrev, a, rsp, ss, tt;
    vec4 ci;

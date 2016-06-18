@@ -319,12 +319,14 @@ void Keyboard(unsigned char key, int x, int y){
 	break;
 	case 'y': // incrementa ​xc ​en 0.05 
 		xc += 0.05;
-		// incrementa ​yc ​en 0.05 
-		yc += 0.05;
 	break;
 	case 'u': // reduce ​xc ​en 0.05 
 		if(xc - 0.05 >= 0.0) xc -= 0.05;
-		// reduce ​yc ​en 0.05 
+	break;
+	case 'h': // incrementa ​yc ​en 0.05 
+		yc += 0.05;
+	break;
+	case 'j': // reduce ​yc ​en 0.05 
 		if(yc - 0.05 >= 0.0) yc -= 0.05;
 	break;
 	case 'n': // incrementa ​sz ​en 0.001 
