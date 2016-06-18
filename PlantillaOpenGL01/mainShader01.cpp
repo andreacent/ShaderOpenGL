@@ -42,12 +42,25 @@ float freq = 1.0;
 float hoff = 0.0;
 float f	   = 1.0;
 
+// mandel
 int maxiter = 20; 
 int escape  = 256; 
 float xc   = 0.5;
 float yc   = 0.5;
 float sz   = 4.0;
 float huefreq = 1.0;
+
+/* 
+   Arreglado spirofield, Listo mandel, Arreglado parámetros mayor estricto que 0. 
+   Sin embargo, hay que arreglar condicionales:
+   - freq al reducir llega a 0.0 y desde este valor si se le da a reducir pasa a 6.7 
+   - hoff de 0.1 pasa a 1.4 (caso similar a freq) 
+   - f, xc,yc y huefreq mismo caso que freq
+   - sz llega a 0.0 y puede que tambien pase a 6.7
+   Estos estan bien (los enteros):
+   - calctype, r, escape y maxiter.
+   Se podria colocar como en el proyecto anterior que el 7 vuelva a los valores originales.
+*/
 
 // -------------------------------TEXTO-------------------------------
 const char* textos[15] = {
@@ -248,17 +261,17 @@ void cargar_shader(int idx) {
 	if (idx == 0){	
 		if (shader01) shader01->begin();
 
-		//shader01->setUniform1f("_maxiter",maxiter); 
-		//shader01->setUniform1f("_escape",escape); 
-		//shader01->setUniform1f("_xc",xc);
-		//shader01->setUniform1f("_yc",yc);
-		//shader01->setUniform1f("_sz",sz);
-		//shader01->setUniform1f("_huefreq",huefreq);
+		shader01->setUniform1f("_maxiter",maxiter); 
+		shader01->setUniform1f("_escape",escape); 
+		shader01->setUniform1f("_xc",xc);
+		shader01->setUniform1f("_yc",yc);
+		shader01->setUniform1f("_sz",sz);
+		shader01->setUniform1f("_huefreq",huefreq);
 	}
 
 	// Plano Izquierdo SpiroField
 	if (idx == 1){		
-		  if (shader02) shader02->begin();
+		if (shader02) shader02->begin();
 
 		shader02->setUniform1f("_calctype",calctype); 
 		shader02->setUniform1f("_R",r);
@@ -297,61 +310,145 @@ void Keyboard(unsigned char key, int x, int y){
 		r += 1;
 	break;
 	case 'e': // reduce ​R ​en 1 
-		if(r - 1 >= 0) r -= 1;
+		if(r - 1 > 0) r -= 1;
 	break;
 	case 's': // incrementa ​freq ​en 0.05  
 		freq += 0.05;
 	break;
 	case 'd': // reduce ​freq ​en 0.05 
-		if(freq - 0.05 >= 0.0) freq -= 0.05;
+		if(freq - 0.05 > 0.0) freq -= 0.05;
 	break;
 	case 'x': // incrementa ​hoff ​en 0.1 
 		hoff += 0.1; 
 	break;
 	case 'c': // reduce hoff ​0.1  
-		if(hoff - 0.1 >= 0.0) hoff -= 0.1;
+		if(hoff - 0.1 > 0.0) hoff -= 0.1;
 	break;
 	case 'r': // incrementa ​f en 0.05  
 		f += 0.05;
 	break;
 	case 't': // reduce f​ 0.05 
-		if(f - 0.05 >= 0.0) f -= 0.05;
+		if(f - 0.05 > 0.0) f -= 0.05;
 	break;
 	case 'y': // incrementa ​xc ​en 0.05 
 		xc += 0.05;
 	break;
 	case 'u': // reduce ​xc ​en 0.05 
-		if(xc - 0.05 >= 0.0) xc -= 0.05;
+		if(xc - 0.05 > 0.0) xc -= 0.05;
 	break;
 	case 'h': // incrementa ​yc ​en 0.05 
 		yc += 0.05;
 	break;
 	case 'j': // reduce ​yc ​en 0.05 
-		if(yc - 0.05 >= 0.0) yc -= 0.05;
+		if(yc - 0.05 > 0.0) yc -= 0.05;
 	break;
 	case 'n': // incrementa ​sz ​en 0.001 
 		sz += 0.001;
 	break;
 	case 'm': // reduce ​sz ​en 0.001 
-		if(sz - 0.001 >= 0.0) sz -= 0.001;
+		if(sz - 0.001 > 0.0) sz -= 0.001;
 	break;
 	case 'i': // incrementa ​huefreq ​en 0.05 
 		huefreq += 0.05;
 	break;
 	case 'o': // reduce ​huefreq  ​en 0.05 
-		if(huefreq - 0.05 >= 0.0) huefreq -= 0.05;
+		if(huefreq - 0.05 > 0.0) huefreq -= 0.05;
 	break;
 	case 'f': // incrementa ​escape ​en 12 
 		escape += 12;
 	break;
 	case 'g': // reduce ​escape ​en 12 
-		if(escape - 12 >= 0) escape -= 12;
+		if(escape - 12 > 0) escape -= 12;
 	break;
 	case 'v': // incrementa ​maxiter ​en 12 
 		maxiter += 12;
 	break;
 	case 'b': // reduce ​maxiter ​en 12 		
-		if(maxiter - 12 >= 0) maxiter -= 12;
+		if(maxiter - 12 > 0) maxiter -= 12;
+	break;
+	case '1': 	
+		r = 6.5;
+		hoff = 1.9;
+		freq = 0.75;
+		calctype = 1;
+		f = 1;
+		//--------
+		xc = 0.5;
+		yc = 0.5;
+		huefreq = 1;
+		sz = 4;
+		escape = 256;
+		maxiter = 20;
+	break;
+	case '2': 	
+		r = 13;
+		hoff = 1.05;
+		freq = 0.8;
+		calctype = 1;
+		f = 0.5;
+		//--------
+		xc = 0.5;
+		yc = 0.5;
+		huefreq = 1;
+		sz = 4;
+		escape = 256;
+		maxiter = 20;
+	break;
+	case '3': 	
+		r = 2;
+		hoff = 0;
+		freq = 0.25;
+		calctype = 0;
+		f = 1;
+		//--------
+		xc = 0.5;
+		yc = 0.5;
+		huefreq = 1;
+		sz = 4;
+		escape = 256;
+		maxiter = 20;
+	break;
+	case '4': 	
+		r = 11;
+		hoff = 0.8;
+		freq = 0.55;
+		calctype = 2;
+		f = 1;
+		//--------
+		xc = 0.5;
+		yc = 0.5;
+		huefreq = 1;
+		sz = 4;
+		escape = 256;
+		maxiter = 20;
+	break;
+	case '5': 	
+		r = 11;
+		hoff = 0.8;
+		freq = 0.55;
+		calctype = 2;
+		f = 1;
+		//--------
+		xc = 0.39;
+		yc = 0.25;
+		huefreq = 0.36;
+		sz = 0.05;
+		escape = 512;
+		maxiter = 120;
+	break;
+	case '6': 	
+		r = 11;
+		hoff = 0.8;
+		freq = 0.55;
+		calctype = 2;
+		f = 1;
+		//--------
+		xc = 0.39;
+		yc = 0.27;
+		huefreq = 2.4;
+		sz = 0.01;
+		escape = 512;
+		maxiter = 256;
 	break;
 	default:
 	break;

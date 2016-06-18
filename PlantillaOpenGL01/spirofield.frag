@@ -1,3 +1,4 @@
+#version 130
 uniform float _calctype;
 uniform float _R;
 uniform float _freq;
@@ -11,7 +12,8 @@ vec4 HSVtoRGB( float h, float v ){
    float f, p, q, t, s;
    vec4 RGB;
    
-   s = gl_TexCoord[0].s;
+   s = 1.0;
+   //s = gl_TexCoord[0].s;
 
    h = 360*h;
    /*if( gl_TexCoord[0].s == 0 ) {
@@ -87,7 +89,7 @@ float lcm(float r, float rv){
 }
 
 vec4 spirofield(float r, float hoff, float freq, float calctype,float f){
-   const float b = 5;
+   const float b = 5.0;
    const int rv = 5;
    float i, theta, rho, nrev, a, rsp, ss, tt;
    vec4 ci;
@@ -101,7 +103,7 @@ vec4 spirofield(float r, float hoff, float freq, float calctype,float f){
    theta += PI;
    rho = 2*sqrt(ss*ss+tt*tt);
    if( rho > (r-rv+b)/r || rho < (r-rv-b)/r ){
-      //ci = 0.25;
+      ci = vec4(0.25,0.25,0.25,1.0);
    }else{
       nrev = lcm(r,rv);
       cg.w = 1.0;
