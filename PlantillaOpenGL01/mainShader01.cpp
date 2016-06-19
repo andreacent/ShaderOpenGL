@@ -319,50 +319,50 @@ void Keyboard(unsigned char key, int x, int y){
 		freq += 0.05;
 	break;
 	case 'd': // reduce ​freq ​en 0.05 
-		if(freq - 0.05 >= 0.05) freq -= 0.05;
-		else freq = 0.0;
+		if(freq - 0.05 > 0.05) freq -= 0.05;
+		else freq = 0.05;
 	break;
 	case 'x': // incrementa ​hoff ​en 0.1 
 		hoff += 0.1; 
 	break;
 	case 'c': // reduce hoff ​0.1  
-		if(hoff - 0.1 >= 0.1) hoff -= 0.1;
-		else hoff = 0.0;
+		if(hoff - 0.1 > 0.1) hoff -= 0.1;
+		else hoff = 0.1;
 	break;
 	case 'r': // incrementa ​f en 0.05  
 		f += 0.05;
 	break;
 	case 't': // reduce f​ 0.05 
-		if(f - 0.05 >= 0.05) f -= 0.05;
-		else f = 0.0;
+		if(f - 0.05 > 0.05) f -= 0.05;
+		else f = 0.05;
 	break;
 	case 'y': // incrementa ​xc ​en 0.05 
 		xc += 0.05;
 	break;
 	case 'u': // reduce ​xc ​en 0.05 
-		if(xc - 0.05 >= 0.05) xc -= 0.05;
-		else xc = 0.0;
+		if(xc - 0.05 > 0.05) xc -= 0.05;
+		else xc = 0.05;
 	break;
 	case 'h': // incrementa ​yc ​en 0.05 
 		yc += 0.05;
 	break;
 	case 'j': // reduce ​yc ​en 0.05 
-		if(yc - 0.05 >= 0.05) yc -= 0.05;
-		else yc = 0.0;
+		if(yc - 0.05 > 0.05) yc -= 0.05;
+		else yc = 0.05;
 	break;
 	case 'n': // incrementa ​sz ​en 0.001 
 		sz += 0.001;
 	break;
 	case 'm': // reduce ​sz ​en 0.001 
-		if(sz - 0.001 >= 0.001) sz -= 0.001;
-		else sz = 0.0;
+		if(sz - 0.001 > 0.001) sz -= 0.001;
+		else sz = 0.001;
 	break;
 	case 'i': // incrementa ​huefreq ​en 0.05 
 		huefreq += 0.05;
 	break;
 	case 'o': // reduce ​huefreq  ​en 0.05 
-		if(huefreq - 0.05 >= 0.05) huefreq -= 0.05;
-		else huefreq = 0.0;
+		if(huefreq - 0.05 > 0.05) huefreq -= 0.05;
+		else huefreq = 0.05;
 	break;
 	case 'f': // incrementa ​escape ​en 12 
 		escape += 12;
